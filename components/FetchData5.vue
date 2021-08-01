@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2>ID:1のデータ読込後に読み込み(コンポーネント切り分け)</h2>
+    <h2>
+      ID:1のデータ読込後に読み込み(コンポーネント切り分け / 改変useAspidaSWRV)
+    </h2>
     <template v-if="planetsError3">{{ planetsError3.message }}</template>
     <template v-else-if="!planetsData3">Loading...</template>
     <template v-else>{{ planetsData3.url }}</template>
@@ -9,10 +11,10 @@
 
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
-import useAspidaSWRV from "@aspida/swrv";
 import api from "~/apis/$api";
 import aspida from "@aspida/axios";
 import axios from "axios";
+import useMyAspidaSWRV from "~/lib/useMyAspidaSWRV";
 
 const client = api(
   aspida(axios, {
@@ -27,7 +29,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { data: planetsData3, error: planetsError3 } = useAspidaSWRV(
+    const { data: planetsData3, error: planetsError3 } = useMyAspidaSWRV(
       client.planets._id(2),
       {
         enabled: !!props.planetData,

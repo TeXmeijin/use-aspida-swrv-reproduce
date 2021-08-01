@@ -24,12 +24,11 @@ export default defineComponent({
   props: {
     planetData: {
       type: Object,
-      required: true,
     },
   },
   setup(props) {
     const { data: planetsData3, error: planetsError3 } = useSWRV(
-      () => !!props.planetData && client.planets._id(2).$path(),
+      () => (!!props.planetData ? client.planets._id(2).$path() : null),
       () => client.planets._id(2).$get()
     );
 
