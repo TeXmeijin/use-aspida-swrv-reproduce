@@ -1,7 +1,8 @@
 <template>
   <div>
     <h2>
-      ID:1のデータ読込後に読み込み(コンポーネント切り分け / 改変useAspidaSWRV)
+      ID:1のデータ読込後に読み込み(コンポーネント切り分け / 改変useAspidaSWRV :
+      enabledをComputedRef＜boolean＞型に変更)
     </h2>
     <template v-if="planetsError3">{{ planetsError3.message }}</template>
     <template v-else-if="!planetsData3">Loading...</template>
@@ -15,6 +16,7 @@ import api from "~/apis/$api";
 import aspida from "@aspida/axios";
 import axios from "axios";
 import useMyAspidaSWRV from "~/lib/useMyAspidaSWRV";
+import { computed } from "@vue/composition-api";
 
 const client = api(
   aspida(axios, {
@@ -32,7 +34,7 @@ export default defineComponent({
     const { data: planetsData3, error: planetsError3 } = useMyAspidaSWRV(
       client.planets._id(2),
       {
-        enabled: !!props.planetData,
+        enabled: computed(() => !!props.planetData),
       }
     );
 

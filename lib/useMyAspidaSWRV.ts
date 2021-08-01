@@ -1,5 +1,6 @@
 import useSWRV, { IConfig } from "swrv";
 import { IResponse } from "swrv/dist/types";
+import { computed, ref } from "@vue/composition-api";
 
 type Options<T extends (option: any) => Promise<any>> = Parameters<
   Parameters<T> extends [Parameters<T>[0]]
@@ -43,9 +44,12 @@ function useMyAspidaSWRV<
   const method = typeof key === "string" ? key : "$get";
   const opt = typeof key === "string" ? (option as any)[0] : key;
 
+  const enabled =
+    typeof opt?.enabled === "object" ? opt.enabled.value : ref(!opt?.enabled);
+
   return useSWRV(
     // ここの判定を修正したりすると治るか？
-    () => (opt?.enabled === false ? null : [api.$path(opt), method]),
+    () => (enabled.value ? null : api.$path(opt)),
     () => api[method](opt),
     opt
   );
