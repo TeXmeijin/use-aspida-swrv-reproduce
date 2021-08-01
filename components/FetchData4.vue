@@ -1,0 +1,44 @@
+<template>
+  <div>
+    <h2>ID:1のデータ読込後に読み込み(コンポーネント切り分け / useSWRV)</h2>
+    <template v-if="planetsError3">{{ planetsError3.message }}</template>
+    <template v-else-if="!planetsData3">Loading...</template>
+    <template v-else>{{ planetsData3.url }}</template>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "@nuxtjs/composition-api";
+import api from "~/apis/$api";
+import aspida from "@aspida/axios";
+import axios from "axios";
+import useSWRV from "swrv";
+
+const client = api(
+  aspida(axios, {
+    baseURL: "https://swapi.dev/api",
+  })
+);
+
+export default defineComponent({
+  props: {
+    planetData: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    const { data: planetsData3, error: planetsError3 } = useSWRV(
+      () => !!props.planetData && client.planets._id(2).$path(),
+      () => client.planets._id(2).$get()
+    );
+
+    return {
+      planetsData3,
+      planetsError3,
+    };
+  },
+});
+</script>
+
+<style lang="scss" scoped></style>
