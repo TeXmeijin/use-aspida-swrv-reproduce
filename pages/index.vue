@@ -16,6 +16,7 @@
     <fetch-data3 :planetData="planetsData"></fetch-data3>
     <fetch-data4 :planetData="planetsData"></fetch-data4>
     <fetch-data5 :planetData="planetsData"></fetch-data5>
+    <fetch-data6 :planetData="planetsData"></fetch-data6>
   </main>
 </template>
 
